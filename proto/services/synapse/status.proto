@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+package yotta.services.synapse;
+
+option go_package = "github.com/yottalabsai/endorphin/pkg/services/synapse";
+
+message AgentStatusRequest {
+  string agent_id = 1;         
+  CpuInfo cpu = 2;       
+  ResourceUsage memory = 3;    
+  ResourceUsage disk = 4;     
+  GpuInfo gpu = 5;            
+  string timestamp = 6;        
+}
+
+message CpuInfo {
+  string model_name = 1;          // CPU 型号名称（例如 Intel Core i7-10700K）
+  double usage = 2;              // 当前总 CPU 利用率（百分比）
+  repeated double per_core_usage = 3; // 每个核心的利用率（百分比，可选）
+  LoadAverage load_average = 4;  // 系统负载
+  int32 threads = 5;             // 当前线程数
+}
+
+message LoadAverage {
+  double one_min = 1;    // 过去 1 分钟的负载
+  double five_min = 2;   // 过去 5 分钟的负载
+  double fifteen_min = 3; // 过去 15 分钟的负载
+}
+
+message ResourceUsage {
+  double total = 1;            
+  double used = 2;             
+}
+
+message GpuInfo {
+  string model_name = 1;            
+  double total_memory = 2;    
+  double used_memory = 3;    
+}
+
+message ReportAckResponse {
+  bool success = 1;            
+  string message = 2;          
+}
