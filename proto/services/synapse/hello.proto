@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package yotta.services.synapse;
+
+option go_package = "github.com/yottalabsai/endorphin/pkg/services/synapse";
+
+message HelloRequest{
+  string name = 1;
+}
+
+message HelloResponse{
+  int32 code = 1;
+  string value = 2;
+}
