@@ -1,0 +1,77 @@
+syntax = "proto3";
+
+package yotta.services.synapse;
+
+option go_package = "github.com/yottalabsai/endorphin/pkg/services/synapse";
+
+message StreamRequest {
+  string client_id = 1;         // 客户端标识，当Register成功后，server返回给client
+  int64 timestamp = 2;          // 时间戳
+  string message_id = 3;        // 请求ID， 用于幂等，谁发起消息，谁负责生成 message_id；
+  oneof payload {               // 不同类型payload，可以扩展各种不同消息类型， 本身就是可选，可能是nil
+      PingMessage ping = 4;
+      RegisterMessage register_message = 5;
+      RunModelMessage run_model_message = 6;
+      InferenceMessage inference_message = 7;
+  }
+}
+
+// 响应结果
+message StreamResponse {
+  int64 code = 1;
+  string message = 2;
+  oneof data { 
+      RegisterResult register_result = 3;        // 注册成功，server返回clientId给client
+      RunModelResult run_model_result = 4;       // 加载模型成功, client返回状态给server, 可以不做
+      InferenceResult inference_result = 5;      // 运行Inference成功，client返回结果给server
+  }
+}
+
+
+message InferenceMessage {
+  // 下面的先不用
+  // double temperature = 1;
+  // double top_p = 2;
+  // int32 max_tokens = 3;
+  // double frequency_penalty = 4;
+  // double presence_penalty = 5;
+  // double repetition_penalty = 6;
+  // string model = 7;
+  repeated InferenceMessageContent messages = 1;
+}
+
+message InferenceMessageContent {
+  string role = 1;
+  string content = 2;
+}
+
+// 心跳消息
+message PingMessage {
+  int64 sequence = 1;
+}
+
+// 注册消息
+message RegisterMessage {
+  int64 timestamp = 1;  // 时间戳 先不用传参数
+  string sign = 2;      // client私钥签名 先不用传参数
+}
+
+// 启动模型
+message RunModelMessage {
+  string model = 1; 
+}
+
+// 注册成功消息
+message RegisterResult {
+  string client_id = 1;
+}
+
+// 加载模型成功消息（没啥意义，可以不用做这个消息）
+message RunModelResult {
+  string model = 1;
+}
+
+// Inference成功消息
+message InferenceResult {
+  string content = 1;
+}
