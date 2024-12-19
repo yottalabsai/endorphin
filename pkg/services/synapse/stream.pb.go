@@ -20,7 +20,7 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-type StreamRequest struct {
+type YottaLabsStream struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
@@ -30,15 +30,17 @@ type StreamRequest struct {
 	MessageId string `protobuf:"bytes,3,opt,name=message_id,json=messageId,proto3" json:"message_id,omitempty"` // 请求ID， 用于幂等，谁发起消息，谁负责生成 message_id；
 	// Types that are assignable to Payload:
 	//
-	//	*StreamRequest_Ping
-	//	*StreamRequest_RegisterMessage
-	//	*StreamRequest_RunModelMessage
-	//	*StreamRequest_InferenceMessage
-	Payload isStreamRequest_Payload `protobuf_oneof:"payload"`
+	//	*YottaLabsStream_Ping
+	//	*YottaLabsStream_Pong
+	//	*YottaLabsStream_RunModelMessage
+	//	*YottaLabsStream_RunModelResult
+	//	*YottaLabsStream_InferenceMessage
+	//	*YottaLabsStream_InferenceResult
+	Payload isYottaLabsStream_Payload `protobuf_oneof:"payload"`
 }
 
-func (x *StreamRequest) Reset() {
-	*x = StreamRequest{}
+func (x *YottaLabsStream) Reset() {
+	*x = YottaLabsStream{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_services_synapse_stream_proto_msgTypes[0]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -46,13 +48,13 @@ func (x *StreamRequest) Reset() {
 	}
 }
 
-func (x *StreamRequest) String() string {
+func (x *YottaLabsStream) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*StreamRequest) ProtoMessage() {}
+func (*YottaLabsStream) ProtoMessage() {}
 
-func (x *StreamRequest) ProtoReflect() protoreflect.Message {
+func (x *YottaLabsStream) ProtoReflect() protoreflect.Message {
 	mi := &file_services_synapse_stream_proto_msgTypes[0]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -64,206 +66,120 @@ func (x *StreamRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use StreamRequest.ProtoReflect.Descriptor instead.
-func (*StreamRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use YottaLabsStream.ProtoReflect.Descriptor instead.
+func (*YottaLabsStream) Descriptor() ([]byte, []int) {
 	return file_services_synapse_stream_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *StreamRequest) GetClientId() string {
+func (x *YottaLabsStream) GetClientId() string {
 	if x != nil {
 		return x.ClientId
 	}
 	return ""
 }
 
-func (x *StreamRequest) GetTimestamp() int64 {
+func (x *YottaLabsStream) GetTimestamp() int64 {
 	if x != nil {
 		return x.Timestamp
 	}
 	return 0
 }
 
-func (x *StreamRequest) GetMessageId() string {
+func (x *YottaLabsStream) GetMessageId() string {
 	if x != nil {
 		return x.MessageId
 	}
 	return ""
 }
 
-func (m *StreamRequest) GetPayload() isStreamRequest_Payload {
+func (m *YottaLabsStream) GetPayload() isYottaLabsStream_Payload {
 	if m != nil {
 		return m.Payload
 	}
 	return nil
 }
 
-func (x *StreamRequest) GetPing() *PingMessage {
-	if x, ok := x.GetPayload().(*StreamRequest_Ping); ok {
+func (x *YottaLabsStream) GetPing() *PingMessage {
+	if x, ok := x.GetPayload().(*YottaLabsStream_Ping); ok {
 		return x.Ping
 	}
 	return nil
 }
 
-func (x *StreamRequest) GetRegisterMessage() *RegisterMessage {
-	if x, ok := x.GetPayload().(*StreamRequest_RegisterMessage); ok {
-		return x.RegisterMessage
+func (x *YottaLabsStream) GetPong() *PongResult {
+	if x, ok := x.GetPayload().(*YottaLabsStream_Pong); ok {
+		return x.Pong
 	}
 	return nil
 }
 
-func (x *StreamRequest) GetRunModelMessage() *RunModelMessage {
-	if x, ok := x.GetPayload().(*StreamRequest_RunModelMessage); ok {
+func (x *YottaLabsStream) GetRunModelMessage() *RunModelMessage {
+	if x, ok := x.GetPayload().(*YottaLabsStream_RunModelMessage); ok {
 		return x.RunModelMessage
 	}
 	return nil
 }
 
-func (x *StreamRequest) GetInferenceMessage() *InferenceMessage {
-	if x, ok := x.GetPayload().(*StreamRequest_InferenceMessage); ok {
-		return x.InferenceMessage
-	}
-	return nil
-}
-
-type isStreamRequest_Payload interface {
-	isStreamRequest_Payload()
-}
-
-type StreamRequest_Ping struct {
-	Ping *PingMessage `protobuf:"bytes,4,opt,name=ping,proto3,oneof"`
-}
-
-type StreamRequest_RegisterMessage struct {
-	RegisterMessage *RegisterMessage `protobuf:"bytes,5,opt,name=register_message,json=registerMessage,proto3,oneof"`
-}
-
-type StreamRequest_RunModelMessage struct {
-	RunModelMessage *RunModelMessage `protobuf:"bytes,6,opt,name=run_model_message,json=runModelMessage,proto3,oneof"`
-}
-
-type StreamRequest_InferenceMessage struct {
-	InferenceMessage *InferenceMessage `protobuf:"bytes,7,opt,name=inference_message,json=inferenceMessage,proto3,oneof"`
-}
-
-func (*StreamRequest_Ping) isStreamRequest_Payload() {}
-
-func (*StreamRequest_RegisterMessage) isStreamRequest_Payload() {}
-
-func (*StreamRequest_RunModelMessage) isStreamRequest_Payload() {}
-
-func (*StreamRequest_InferenceMessage) isStreamRequest_Payload() {}
-
-// 响应结果
-type StreamResponse struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	Code    int64  `protobuf:"varint,1,opt,name=code,proto3" json:"code,omitempty"`
-	Message string `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
-	// Types that are assignable to Data:
-	//
-	//	*StreamResponse_RegisterResult
-	//	*StreamResponse_RunModelResult
-	//	*StreamResponse_InferenceResult
-	Data isStreamResponse_Data `protobuf_oneof:"data"`
-}
-
-func (x *StreamResponse) Reset() {
-	*x = StreamResponse{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_services_synapse_stream_proto_msgTypes[1]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *StreamResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*StreamResponse) ProtoMessage() {}
-
-func (x *StreamResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_services_synapse_stream_proto_msgTypes[1]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use StreamResponse.ProtoReflect.Descriptor instead.
-func (*StreamResponse) Descriptor() ([]byte, []int) {
-	return file_services_synapse_stream_proto_rawDescGZIP(), []int{1}
-}
-
-func (x *StreamResponse) GetCode() int64 {
-	if x != nil {
-		return x.Code
-	}
-	return 0
-}
-
-func (x *StreamResponse) GetMessage() string {
-	if x != nil {
-		return x.Message
-	}
-	return ""
-}
-
-func (m *StreamResponse) GetData() isStreamResponse_Data {
-	if m != nil {
-		return m.Data
-	}
-	return nil
-}
-
-func (x *StreamResponse) GetRegisterResult() *RegisterResult {
-	if x, ok := x.GetData().(*StreamResponse_RegisterResult); ok {
-		return x.RegisterResult
-	}
-	return nil
-}
-
-func (x *StreamResponse) GetRunModelResult() *RunModelResult {
-	if x, ok := x.GetData().(*StreamResponse_RunModelResult); ok {
+func (x *YottaLabsStream) GetRunModelResult() *RunModelResult {
+	if x, ok := x.GetPayload().(*YottaLabsStream_RunModelResult); ok {
 		return x.RunModelResult
 	}
 	return nil
 }
 
-func (x *StreamResponse) GetInferenceResult() *InferenceResult {
-	if x, ok := x.GetData().(*StreamResponse_InferenceResult); ok {
+func (x *YottaLabsStream) GetInferenceMessage() *InferenceMessage {
+	if x, ok := x.GetPayload().(*YottaLabsStream_InferenceMessage); ok {
+		return x.InferenceMessage
+	}
+	return nil
+}
+
+func (x *YottaLabsStream) GetInferenceResult() *InferenceResult {
+	if x, ok := x.GetPayload().(*YottaLabsStream_InferenceResult); ok {
 		return x.InferenceResult
 	}
 	return nil
 }
 
-type isStreamResponse_Data interface {
-	isStreamResponse_Data()
+type isYottaLabsStream_Payload interface {
+	isYottaLabsStream_Payload()
 }
 
-type StreamResponse_RegisterResult struct {
-	RegisterResult *RegisterResult `protobuf:"bytes,3,opt,name=register_result,json=registerResult,proto3,oneof"` // 注册成功，server返回clientId给client
+type YottaLabsStream_Ping struct {
+	Ping *PingMessage `protobuf:"bytes,4,opt,name=ping,proto3,oneof"`
 }
 
-type StreamResponse_RunModelResult struct {
-	RunModelResult *RunModelResult `protobuf:"bytes,4,opt,name=run_model_result,json=runModelResult,proto3,oneof"` // 加载模型成功, client返回状态给server, 可以不做
+type YottaLabsStream_Pong struct {
+	Pong *PongResult `protobuf:"bytes,5,opt,name=pong,proto3,oneof"`
 }
 
-type StreamResponse_InferenceResult struct {
-	InferenceResult *InferenceResult `protobuf:"bytes,5,opt,name=inference_result,json=inferenceResult,proto3,oneof"` // 运行Inference成功，client返回结果给server
+type YottaLabsStream_RunModelMessage struct {
+	RunModelMessage *RunModelMessage `protobuf:"bytes,6,opt,name=run_model_message,json=runModelMessage,proto3,oneof"`
 }
 
-func (*StreamResponse_RegisterResult) isStreamResponse_Data() {}
+type YottaLabsStream_RunModelResult struct {
+	RunModelResult *RunModelResult `protobuf:"bytes,7,opt,name=run_model_result,json=runModelResult,proto3,oneof"`
+}
 
-func (*StreamResponse_RunModelResult) isStreamResponse_Data() {}
+type YottaLabsStream_InferenceMessage struct {
+	InferenceMessage *InferenceMessage `protobuf:"bytes,8,opt,name=inference_message,json=inferenceMessage,proto3,oneof"`
+}
 
-func (*StreamResponse_InferenceResult) isStreamResponse_Data() {}
+type YottaLabsStream_InferenceResult struct {
+	InferenceResult *InferenceResult `protobuf:"bytes,9,opt,name=inference_result,json=inferenceResult,proto3,oneof"`
+}
+
+func (*YottaLabsStream_Ping) isYottaLabsStream_Payload() {}
+
+func (*YottaLabsStream_Pong) isYottaLabsStream_Payload() {}
+
+func (*YottaLabsStream_RunModelMessage) isYottaLabsStream_Payload() {}
+
+func (*YottaLabsStream_RunModelResult) isYottaLabsStream_Payload() {}
+
+func (*YottaLabsStream_InferenceMessage) isYottaLabsStream_Payload() {}
+
+func (*YottaLabsStream_InferenceResult) isYottaLabsStream_Payload() {}
 
 type InferenceMessage struct {
 	state         protoimpl.MessageState
@@ -284,7 +200,7 @@ type InferenceMessage struct {
 func (x *InferenceMessage) Reset() {
 	*x = InferenceMessage{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_services_synapse_stream_proto_msgTypes[2]
+		mi := &file_services_synapse_stream_proto_msgTypes[1]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -297,7 +213,7 @@ func (x *InferenceMessage) String() string {
 func (*InferenceMessage) ProtoMessage() {}
 
 func (x *InferenceMessage) ProtoReflect() protoreflect.Message {
-	mi := &file_services_synapse_stream_proto_msgTypes[2]
+	mi := &file_services_synapse_stream_proto_msgTypes[1]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -310,7 +226,7 @@ func (x *InferenceMessage) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use InferenceMessage.ProtoReflect.Descriptor instead.
 func (*InferenceMessage) Descriptor() ([]byte, []int) {
-	return file_services_synapse_stream_proto_rawDescGZIP(), []int{2}
+	return file_services_synapse_stream_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *InferenceMessage) GetMessages() []*InferenceMessageContent {
@@ -332,7 +248,7 @@ type InferenceMessageContent struct {
 func (x *InferenceMessageContent) Reset() {
 	*x = InferenceMessageContent{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_services_synapse_stream_proto_msgTypes[3]
+		mi := &file_services_synapse_stream_proto_msgTypes[2]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -345,7 +261,7 @@ func (x *InferenceMessageContent) String() string {
 func (*InferenceMessageContent) ProtoMessage() {}
 
 func (x *InferenceMessageContent) ProtoReflect() protoreflect.Message {
-	mi := &file_services_synapse_stream_proto_msgTypes[3]
+	mi := &file_services_synapse_stream_proto_msgTypes[2]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -358,7 +274,7 @@ func (x *InferenceMessageContent) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use InferenceMessageContent.ProtoReflect.Descriptor instead.
 func (*InferenceMessageContent) Descriptor() ([]byte, []int) {
-	return file_services_synapse_stream_proto_rawDescGZIP(), []int{3}
+	return file_services_synapse_stream_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *InferenceMessageContent) GetRole() string {
@@ -387,7 +303,7 @@ type PingMessage struct {
 func (x *PingMessage) Reset() {
 	*x = PingMessage{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_services_synapse_stream_proto_msgTypes[4]
+		mi := &file_services_synapse_stream_proto_msgTypes[3]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -400,7 +316,7 @@ func (x *PingMessage) String() string {
 func (*PingMessage) ProtoMessage() {}
 
 func (x *PingMessage) ProtoReflect() protoreflect.Message {
-	mi := &file_services_synapse_stream_proto_msgTypes[4]
+	mi := &file_services_synapse_stream_proto_msgTypes[3]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -413,7 +329,7 @@ func (x *PingMessage) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PingMessage.ProtoReflect.Descriptor instead.
 func (*PingMessage) Descriptor() ([]byte, []int) {
-	return file_services_synapse_stream_proto_rawDescGZIP(), []int{4}
+	return file_services_synapse_stream_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *PingMessage) GetSequence() int64 {
@@ -423,33 +339,31 @@ func (x *PingMessage) GetSequence() int64 {
 	return 0
 }
 
-// 注册消息 @LKim实现
-type RegisterMessage struct {
+type PongResult struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Timestamp int64  `protobuf:"varint,1,opt,name=timestamp,proto3" json:"timestamp,omitempty"` // 时间戳 先不用传参数
-	Sign      string `protobuf:"bytes,2,opt,name=sign,proto3" json:"sign,omitempty"`            // client私钥签名 先不用传参数
+	Sequence int64 `protobuf:"varint,1,opt,name=sequence,proto3" json:"sequence,omitempty"`
 }
 
-func (x *RegisterMessage) Reset() {
-	*x = RegisterMessage{}
+func (x *PongResult) Reset() {
+	*x = PongResult{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_services_synapse_stream_proto_msgTypes[5]
+		mi := &file_services_synapse_stream_proto_msgTypes[4]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
 }
 
-func (x *RegisterMessage) String() string {
+func (x *PongResult) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*RegisterMessage) ProtoMessage() {}
+func (*PongResult) ProtoMessage() {}
 
-func (x *RegisterMessage) ProtoReflect() protoreflect.Message {
-	mi := &file_services_synapse_stream_proto_msgTypes[5]
+func (x *PongResult) ProtoReflect() protoreflect.Message {
+	mi := &file_services_synapse_stream_proto_msgTypes[4]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -460,23 +374,16 @@ func (x *RegisterMessage) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use RegisterMessage.ProtoReflect.Descriptor instead.
-func (*RegisterMessage) Descriptor() ([]byte, []int) {
-	return file_services_synapse_stream_proto_rawDescGZIP(), []int{5}
+// Deprecated: Use PongResult.ProtoReflect.Descriptor instead.
+func (*PongResult) Descriptor() ([]byte, []int) {
+	return file_services_synapse_stream_proto_rawDescGZIP(), []int{4}
 }
 
-func (x *RegisterMessage) GetTimestamp() int64 {
+func (x *PongResult) GetSequence() int64 {
 	if x != nil {
-		return x.Timestamp
+		return x.Sequence
 	}
 	return 0
-}
-
-func (x *RegisterMessage) GetSign() string {
-	if x != nil {
-		return x.Sign
-	}
-	return ""
 }
 
 // 启动模型
@@ -491,7 +398,7 @@ type RunModelMessage struct {
 func (x *RunModelMessage) Reset() {
 	*x = RunModelMessage{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_services_synapse_stream_proto_msgTypes[6]
+		mi := &file_services_synapse_stream_proto_msgTypes[5]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -504,7 +411,7 @@ func (x *RunModelMessage) String() string {
 func (*RunModelMessage) ProtoMessage() {}
 
 func (x *RunModelMessage) ProtoReflect() protoreflect.Message {
-	mi := &file_services_synapse_stream_proto_msgTypes[6]
+	mi := &file_services_synapse_stream_proto_msgTypes[5]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -517,60 +424,12 @@ func (x *RunModelMessage) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RunModelMessage.ProtoReflect.Descriptor instead.
 func (*RunModelMessage) Descriptor() ([]byte, []int) {
-	return file_services_synapse_stream_proto_rawDescGZIP(), []int{6}
+	return file_services_synapse_stream_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *RunModelMessage) GetModel() string {
 	if x != nil {
 		return x.Model
-	}
-	return ""
-}
-
-// 注册成功消息
-type RegisterResult struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	ClientId string `protobuf:"bytes,1,opt,name=client_id,json=clientId,proto3" json:"client_id,omitempty"`
-}
-
-func (x *RegisterResult) Reset() {
-	*x = RegisterResult{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_services_synapse_stream_proto_msgTypes[7]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *RegisterResult) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*RegisterResult) ProtoMessage() {}
-
-func (x *RegisterResult) ProtoReflect() protoreflect.Message {
-	mi := &file_services_synapse_stream_proto_msgTypes[7]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use RegisterResult.ProtoReflect.Descriptor instead.
-func (*RegisterResult) Descriptor() ([]byte, []int) {
-	return file_services_synapse_stream_proto_rawDescGZIP(), []int{7}
-}
-
-func (x *RegisterResult) GetClientId() string {
-	if x != nil {
-		return x.ClientId
 	}
 	return ""
 }
@@ -587,7 +446,7 @@ type RunModelResult struct {
 func (x *RunModelResult) Reset() {
 	*x = RunModelResult{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_services_synapse_stream_proto_msgTypes[8]
+		mi := &file_services_synapse_stream_proto_msgTypes[6]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -600,7 +459,7 @@ func (x *RunModelResult) String() string {
 func (*RunModelResult) ProtoMessage() {}
 
 func (x *RunModelResult) ProtoReflect() protoreflect.Message {
-	mi := &file_services_synapse_stream_proto_msgTypes[8]
+	mi := &file_services_synapse_stream_proto_msgTypes[6]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -613,7 +472,7 @@ func (x *RunModelResult) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RunModelResult.ProtoReflect.Descriptor instead.
 func (*RunModelResult) Descriptor() ([]byte, []int) {
-	return file_services_synapse_stream_proto_rawDescGZIP(), []int{8}
+	return file_services_synapse_stream_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *RunModelResult) GetModel() string {
@@ -635,7 +494,7 @@ type InferenceResult struct {
 func (x *InferenceResult) Reset() {
 	*x = InferenceResult{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_services_synapse_stream_proto_msgTypes[9]
+		mi := &file_services_synapse_stream_proto_msgTypes[7]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -648,7 +507,7 @@ func (x *InferenceResult) String() string {
 func (*InferenceResult) ProtoMessage() {}
 
 func (x *InferenceResult) ProtoReflect() protoreflect.Message {
-	mi := &file_services_synapse_stream_proto_msgTypes[9]
+	mi := &file_services_synapse_stream_proto_msgTypes[7]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -661,7 +520,7 @@ func (x *InferenceResult) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use InferenceResult.ProtoReflect.Descriptor instead.
 func (*InferenceResult) Descriptor() ([]byte, []int) {
-	return file_services_synapse_stream_proto_rawDescGZIP(), []int{9}
+	return file_services_synapse_stream_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *InferenceResult) GetContent() string {
@@ -677,78 +536,62 @@ var file_services_synapse_stream_proto_rawDesc = []byte{
 	0x0a, 0x1d, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x73, 0x2f, 0x73, 0x79, 0x6e, 0x61, 0x70,
 	0x73, 0x65, 0x2f, 0x73, 0x74, 0x72, 0x65, 0x61, 0x6d, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12,
 	0x16, 0x79, 0x6f, 0x74, 0x74, 0x61, 0x2e, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x73, 0x2e,
-	0x73, 0x79, 0x6e, 0x61, 0x70, 0x73, 0x65, 0x22, 0xb5, 0x03, 0x0a, 0x0d, 0x53, 0x74, 0x72, 0x65,
-	0x61, 0x6d, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x1b, 0x0a, 0x09, 0x63, 0x6c, 0x69,
-	0x65, 0x6e, 0x74, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x63, 0x6c,
-	0x69, 0x65, 0x6e, 0x74, 0x49, 0x64, 0x12, 0x1c, 0x0a, 0x09, 0x74, 0x69, 0x6d, 0x65, 0x73, 0x74,
-	0x61, 0x6d, 0x70, 0x18, 0x02, 0x20, 0x01, 0x28, 0x03, 0x52, 0x09, 0x74, 0x69, 0x6d, 0x65, 0x73,
-	0x74, 0x61, 0x6d, 0x70, 0x12, 0x1d, 0x0a, 0x0a, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x5f,
-	0x69, 0x64, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67,
-	0x65, 0x49, 0x64, 0x12, 0x39, 0x0a, 0x04, 0x70, 0x69, 0x6e, 0x67, 0x18, 0x04, 0x20, 0x01, 0x28,
-	0x0b, 0x32, 0x23, 0x2e, 0x79, 0x6f, 0x74, 0x74, 0x61, 0x2e, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63,
-	0x65, 0x73, 0x2e, 0x73, 0x79, 0x6e, 0x61, 0x70, 0x73, 0x65, 0x2e, 0x50, 0x69, 0x6e, 0x67, 0x4d,
-	0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x48, 0x00, 0x52, 0x04, 0x70, 0x69, 0x6e, 0x67, 0x12, 0x54,
-	0x0a, 0x10, 0x72, 0x65, 0x67, 0x69, 0x73, 0x74, 0x65, 0x72, 0x5f, 0x6d, 0x65, 0x73, 0x73, 0x61,
-	0x67, 0x65, 0x18, 0x05, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x27, 0x2e, 0x79, 0x6f, 0x74, 0x74, 0x61,
-	0x2e, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x73, 0x2e, 0x73, 0x79, 0x6e, 0x61, 0x70, 0x73,
-	0x65, 0x2e, 0x52, 0x65, 0x67, 0x69, 0x73, 0x74, 0x65, 0x72, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67,
-	0x65, 0x48, 0x00, 0x52, 0x0f, 0x72, 0x65, 0x67, 0x69, 0x73, 0x74, 0x65, 0x72, 0x4d, 0x65, 0x73,
-	0x73, 0x61, 0x67, 0x65, 0x12, 0x55, 0x0a, 0x11, 0x72, 0x75, 0x6e, 0x5f, 0x6d, 0x6f, 0x64, 0x65,
-	0x6c, 0x5f, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x18, 0x06, 0x20, 0x01, 0x28, 0x0b, 0x32,
-	0x27, 0x2e, 0x79, 0x6f, 0x74, 0x74, 0x61, 0x2e, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x73,
-	0x2e, 0x73, 0x79, 0x6e, 0x61, 0x70, 0x73, 0x65, 0x2e, 0x52, 0x75, 0x6e, 0x4d, 0x6f, 0x64, 0x65,
-	0x6c, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x48, 0x00, 0x52, 0x0f, 0x72, 0x75, 0x6e, 0x4d,
-	0x6f, 0x64, 0x65, 0x6c, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x12, 0x57, 0x0a, 0x11, 0x69,
-	0x6e, 0x66, 0x65, 0x72, 0x65, 0x6e, 0x63, 0x65, 0x5f, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65,
-	0x18, 0x07, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x28, 0x2e, 0x79, 0x6f, 0x74, 0x74, 0x61, 0x2e, 0x73,
-	0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x73, 0x2e, 0x73, 0x79, 0x6e, 0x61, 0x70, 0x73, 0x65, 0x2e,
-	0x49, 0x6e, 0x66, 0x65, 0x72, 0x65, 0x6e, 0x63, 0x65, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65,
-	0x48, 0x00, 0x52, 0x10, 0x69, 0x6e, 0x66, 0x65, 0x72, 0x65, 0x6e, 0x63, 0x65, 0x4d, 0x65, 0x73,
-	0x73, 0x61, 0x67, 0x65, 0x42, 0x09, 0x0a, 0x07, 0x70, 0x61, 0x79, 0x6c, 0x6f, 0x61, 0x64, 0x22,
-	0xc3, 0x02, 0x0a, 0x0e, 0x53, 0x74, 0x72, 0x65, 0x61, 0x6d, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e,
-	0x73, 0x65, 0x12, 0x12, 0x0a, 0x04, 0x63, 0x6f, 0x64, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x03,
-	0x52, 0x04, 0x63, 0x6f, 0x64, 0x65, 0x12, 0x18, 0x0a, 0x07, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67,
-	0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65,
-	0x12, 0x51, 0x0a, 0x0f, 0x72, 0x65, 0x67, 0x69, 0x73, 0x74, 0x65, 0x72, 0x5f, 0x72, 0x65, 0x73,
-	0x75, 0x6c, 0x74, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x26, 0x2e, 0x79, 0x6f, 0x74, 0x74,
-	0x61, 0x2e, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x73, 0x2e, 0x73, 0x79, 0x6e, 0x61, 0x70,
-	0x73, 0x65, 0x2e, 0x52, 0x65, 0x67, 0x69, 0x73, 0x74, 0x65, 0x72, 0x52, 0x65, 0x73, 0x75, 0x6c,
-	0x74, 0x48, 0x00, 0x52, 0x0e, 0x72, 0x65, 0x67, 0x69, 0x73, 0x74, 0x65, 0x72, 0x52, 0x65, 0x73,
-	0x75, 0x6c, 0x74, 0x12, 0x52, 0x0a, 0x10, 0x72, 0x75, 0x6e, 0x5f, 0x6d, 0x6f, 0x64, 0x65, 0x6c,
-	0x5f, 0x72, 0x65, 0x73, 0x75, 0x6c, 0x74, 0x18, 0x04, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x26, 0x2e,
-	0x79, 0x6f, 0x74, 0x74, 0x61, 0x2e, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x73, 0x2e, 0x73,
-	0x79, 0x6e, 0x61, 0x70, 0x73, 0x65, 0x2e, 0x52, 0x75, 0x6e, 0x4d, 0x6f, 0x64, 0x65, 0x6c, 0x52,
-	0x65, 0x73, 0x75, 0x6c, 0x74, 0x48, 0x00, 0x52, 0x0e, 0x72, 0x75, 0x6e, 0x4d, 0x6f, 0x64, 0x65,
-	0x6c, 0x52, 0x65, 0x73, 0x75, 0x6c, 0x74, 0x12, 0x54, 0x0a, 0x10, 0x69, 0x6e, 0x66, 0x65, 0x72,
-	0x65, 0x6e, 0x63, 0x65, 0x5f, 0x72, 0x65, 0x73, 0x75, 0x6c, 0x74, 0x18, 0x05, 0x20, 0x01, 0x28,
-	0x0b, 0x32, 0x27, 0x2e, 0x79, 0x6f, 0x74, 0x74, 0x61, 0x2e, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63,
-	0x65, 0x73, 0x2e, 0x73, 0x79, 0x6e, 0x61, 0x70, 0x73, 0x65, 0x2e, 0x49, 0x6e, 0x66, 0x65, 0x72,
-	0x65, 0x6e, 0x63, 0x65, 0x52, 0x65, 0x73, 0x75, 0x6c, 0x74, 0x48, 0x00, 0x52, 0x0f, 0x69, 0x6e,
-	0x66, 0x65, 0x72, 0x65, 0x6e, 0x63, 0x65, 0x52, 0x65, 0x73, 0x75, 0x6c, 0x74, 0x42, 0x06, 0x0a,
-	0x04, 0x64, 0x61, 0x74, 0x61, 0x22, 0x5f, 0x0a, 0x10, 0x49, 0x6e, 0x66, 0x65, 0x72, 0x65, 0x6e,
-	0x63, 0x65, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x12, 0x4b, 0x0a, 0x08, 0x6d, 0x65, 0x73,
-	0x73, 0x61, 0x67, 0x65, 0x73, 0x18, 0x01, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x2f, 0x2e, 0x79, 0x6f,
+	0x73, 0x79, 0x6e, 0x61, 0x70, 0x73, 0x65, 0x22, 0xc5, 0x04, 0x0a, 0x0f, 0x59, 0x6f, 0x74, 0x74,
+	0x61, 0x4c, 0x61, 0x62, 0x73, 0x53, 0x74, 0x72, 0x65, 0x61, 0x6d, 0x12, 0x1b, 0x0a, 0x09, 0x63,
+	0x6c, 0x69, 0x65, 0x6e, 0x74, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08,
+	0x63, 0x6c, 0x69, 0x65, 0x6e, 0x74, 0x49, 0x64, 0x12, 0x1c, 0x0a, 0x09, 0x74, 0x69, 0x6d, 0x65,
+	0x73, 0x74, 0x61, 0x6d, 0x70, 0x18, 0x02, 0x20, 0x01, 0x28, 0x03, 0x52, 0x09, 0x74, 0x69, 0x6d,
+	0x65, 0x73, 0x74, 0x61, 0x6d, 0x70, 0x12, 0x1d, 0x0a, 0x0a, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67,
+	0x65, 0x5f, 0x69, 0x64, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x6d, 0x65, 0x73, 0x73,
+	0x61, 0x67, 0x65, 0x49, 0x64, 0x12, 0x39, 0x0a, 0x04, 0x70, 0x69, 0x6e, 0x67, 0x18, 0x04, 0x20,
+	0x01, 0x28, 0x0b, 0x32, 0x23, 0x2e, 0x79, 0x6f, 0x74, 0x74, 0x61, 0x2e, 0x73, 0x65, 0x72, 0x76,
+	0x69, 0x63, 0x65, 0x73, 0x2e, 0x73, 0x79, 0x6e, 0x61, 0x70, 0x73, 0x65, 0x2e, 0x50, 0x69, 0x6e,
+	0x67, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x48, 0x00, 0x52, 0x04, 0x70, 0x69, 0x6e, 0x67,
+	0x12, 0x38, 0x0a, 0x04, 0x70, 0x6f, 0x6e, 0x67, 0x18, 0x05, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x22,
+	0x2e, 0x79, 0x6f, 0x74, 0x74, 0x61, 0x2e, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x73, 0x2e,
+	0x73, 0x79, 0x6e, 0x61, 0x70, 0x73, 0x65, 0x2e, 0x50, 0x6f, 0x6e, 0x67, 0x52, 0x65, 0x73, 0x75,
+	0x6c, 0x74, 0x48, 0x00, 0x52, 0x04, 0x70, 0x6f, 0x6e, 0x67, 0x12, 0x55, 0x0a, 0x11, 0x72, 0x75,
+	0x6e, 0x5f, 0x6d, 0x6f, 0x64, 0x65, 0x6c, 0x5f, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x18,
+	0x06, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x27, 0x2e, 0x79, 0x6f, 0x74, 0x74, 0x61, 0x2e, 0x73, 0x65,
+	0x72, 0x76, 0x69, 0x63, 0x65, 0x73, 0x2e, 0x73, 0x79, 0x6e, 0x61, 0x70, 0x73, 0x65, 0x2e, 0x52,
+	0x75, 0x6e, 0x4d, 0x6f, 0x64, 0x65, 0x6c, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x48, 0x00,
+	0x52, 0x0f, 0x72, 0x75, 0x6e, 0x4d, 0x6f, 0x64, 0x65, 0x6c, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67,
+	0x65, 0x12, 0x52, 0x0a, 0x10, 0x72, 0x75, 0x6e, 0x5f, 0x6d, 0x6f, 0x64, 0x65, 0x6c, 0x5f, 0x72,
+	0x65, 0x73, 0x75, 0x6c, 0x74, 0x18, 0x07, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x26, 0x2e, 0x79, 0x6f,
 	0x74, 0x74, 0x61, 0x2e, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x73, 0x2e, 0x73, 0x79, 0x6e,
-	0x61, 0x70, 0x73, 0x65, 0x2e, 0x49, 0x6e, 0x66, 0x65, 0x72, 0x65, 0x6e, 0x63, 0x65, 0x4d, 0x65,
-	0x73, 0x73, 0x61, 0x67, 0x65, 0x43, 0x6f, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x52, 0x08, 0x6d, 0x65,
-	0x73, 0x73, 0x61, 0x67, 0x65, 0x73, 0x22, 0x47, 0x0a, 0x17, 0x49, 0x6e, 0x66, 0x65, 0x72, 0x65,
-	0x6e, 0x63, 0x65, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x43, 0x6f, 0x6e, 0x74, 0x65, 0x6e,
-	0x74, 0x12, 0x12, 0x0a, 0x04, 0x72, 0x6f, 0x6c, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52,
-	0x04, 0x72, 0x6f, 0x6c, 0x65, 0x12, 0x18, 0x0a, 0x07, 0x63, 0x6f, 0x6e, 0x74, 0x65, 0x6e, 0x74,
-	0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x63, 0x6f, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x22,
-	0x29, 0x0a, 0x0b, 0x50, 0x69, 0x6e, 0x67, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x12, 0x1a,
-	0x0a, 0x08, 0x73, 0x65, 0x71, 0x75, 0x65, 0x6e, 0x63, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x03,
-	0x52, 0x08, 0x73, 0x65, 0x71, 0x75, 0x65, 0x6e, 0x63, 0x65, 0x22, 0x43, 0x0a, 0x0f, 0x52, 0x65,
-	0x67, 0x69, 0x73, 0x74, 0x65, 0x72, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x12, 0x1c, 0x0a,
-	0x09, 0x74, 0x69, 0x6d, 0x65, 0x73, 0x74, 0x61, 0x6d, 0x70, 0x18, 0x01, 0x20, 0x01, 0x28, 0x03,
-	0x52, 0x09, 0x74, 0x69, 0x6d, 0x65, 0x73, 0x74, 0x61, 0x6d, 0x70, 0x12, 0x12, 0x0a, 0x04, 0x73,
-	0x69, 0x67, 0x6e, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x73, 0x69, 0x67, 0x6e, 0x22,
-	0x27, 0x0a, 0x0f, 0x52, 0x75, 0x6e, 0x4d, 0x6f, 0x64, 0x65, 0x6c, 0x4d, 0x65, 0x73, 0x73, 0x61,
-	0x67, 0x65, 0x12, 0x14, 0x0a, 0x05, 0x6d, 0x6f, 0x64, 0x65, 0x6c, 0x18, 0x01, 0x20, 0x01, 0x28,
-	0x09, 0x52, 0x05, 0x6d, 0x6f, 0x64, 0x65, 0x6c, 0x22, 0x2d, 0x0a, 0x0e, 0x52, 0x65, 0x67, 0x69,
-	0x73, 0x74, 0x65, 0x72, 0x52, 0x65, 0x73, 0x75, 0x6c, 0x74, 0x12, 0x1b, 0x0a, 0x09, 0x63, 0x6c,
-	0x69, 0x65, 0x6e, 0x74, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x63,
-	0x6c, 0x69, 0x65, 0x6e, 0x74, 0x49, 0x64, 0x22, 0x26, 0x0a, 0x0e, 0x52, 0x75, 0x6e, 0x4d, 0x6f,
+	0x61, 0x70, 0x73, 0x65, 0x2e, 0x52, 0x75, 0x6e, 0x4d, 0x6f, 0x64, 0x65, 0x6c, 0x52, 0x65, 0x73,
+	0x75, 0x6c, 0x74, 0x48, 0x00, 0x52, 0x0e, 0x72, 0x75, 0x6e, 0x4d, 0x6f, 0x64, 0x65, 0x6c, 0x52,
+	0x65, 0x73, 0x75, 0x6c, 0x74, 0x12, 0x57, 0x0a, 0x11, 0x69, 0x6e, 0x66, 0x65, 0x72, 0x65, 0x6e,
+	0x63, 0x65, 0x5f, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x18, 0x08, 0x20, 0x01, 0x28, 0x0b,
+	0x32, 0x28, 0x2e, 0x79, 0x6f, 0x74, 0x74, 0x61, 0x2e, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65,
+	0x73, 0x2e, 0x73, 0x79, 0x6e, 0x61, 0x70, 0x73, 0x65, 0x2e, 0x49, 0x6e, 0x66, 0x65, 0x72, 0x65,
+	0x6e, 0x63, 0x65, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x48, 0x00, 0x52, 0x10, 0x69, 0x6e,
+	0x66, 0x65, 0x72, 0x65, 0x6e, 0x63, 0x65, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x12, 0x54,
+	0x0a, 0x10, 0x69, 0x6e, 0x66, 0x65, 0x72, 0x65, 0x6e, 0x63, 0x65, 0x5f, 0x72, 0x65, 0x73, 0x75,
+	0x6c, 0x74, 0x18, 0x09, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x27, 0x2e, 0x79, 0x6f, 0x74, 0x74, 0x61,
+	0x2e, 0x73, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x73, 0x2e, 0x73, 0x79, 0x6e, 0x61, 0x70, 0x73,
+	0x65, 0x2e, 0x49, 0x6e, 0x66, 0x65, 0x72, 0x65, 0x6e, 0x63, 0x65, 0x52, 0x65, 0x73, 0x75, 0x6c,
+	0x74, 0x48, 0x00, 0x52, 0x0f, 0x69, 0x6e, 0x66, 0x65, 0x72, 0x65, 0x6e, 0x63, 0x65, 0x52, 0x65,
+	0x73, 0x75, 0x6c, 0x74, 0x42, 0x09, 0x0a, 0x07, 0x70, 0x61, 0x79, 0x6c, 0x6f, 0x61, 0x64, 0x22,
+	0x5f, 0x0a, 0x10, 0x49, 0x6e, 0x66, 0x65, 0x72, 0x65, 0x6e, 0x63, 0x65, 0x4d, 0x65, 0x73, 0x73,
+	0x61, 0x67, 0x65, 0x12, 0x4b, 0x0a, 0x08, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x73, 0x18,
+	0x01, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x2f, 0x2e, 0x79, 0x6f, 0x74, 0x74, 0x61, 0x2e, 0x73, 0x65,
+	0x72, 0x76, 0x69, 0x63, 0x65, 0x73, 0x2e, 0x73, 0x79, 0x6e, 0x61, 0x70, 0x73, 0x65, 0x2e, 0x49,
+	0x6e, 0x66, 0x65, 0x72, 0x65, 0x6e, 0x63, 0x65, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x43,
+	0x6f, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x52, 0x08, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x73,
+	0x22, 0x47, 0x0a, 0x17, 0x49, 0x6e, 0x66, 0x65, 0x72, 0x65, 0x6e, 0x63, 0x65, 0x4d, 0x65, 0x73,
+	0x73, 0x61, 0x67, 0x65, 0x43, 0x6f, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x12, 0x12, 0x0a, 0x04, 0x72,
+	0x6f, 0x6c, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x72, 0x6f, 0x6c, 0x65, 0x12,
+	0x18, 0x0a, 0x07, 0x63, 0x6f, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09,
+	0x52, 0x07, 0x63, 0x6f, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x22, 0x29, 0x0a, 0x0b, 0x50, 0x69, 0x6e,
+	0x67, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x12, 0x1a, 0x0a, 0x08, 0x73, 0x65, 0x71, 0x75,
+	0x65, 0x6e, 0x63, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x03, 0x52, 0x08, 0x73, 0x65, 0x71, 0x75,
+	0x65, 0x6e, 0x63, 0x65, 0x22, 0x28, 0x0a, 0x0a, 0x50, 0x6f, 0x6e, 0x67, 0x52, 0x65, 0x73, 0x75,
+	0x6c, 0x74, 0x12, 0x1a, 0x0a, 0x08, 0x73, 0x65, 0x71, 0x75, 0x65, 0x6e, 0x63, 0x65, 0x18, 0x01,
+	0x20, 0x01, 0x28, 0x03, 0x52, 0x08, 0x73, 0x65, 0x71, 0x75, 0x65, 0x6e, 0x63, 0x65, 0x22, 0x27,
+	0x0a, 0x0f, 0x52, 0x75, 0x6e, 0x4d, 0x6f, 0x64, 0x65, 0x6c, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67,
+	0x65, 0x12, 0x14, 0x0a, 0x05, 0x6d, 0x6f, 0x64, 0x65, 0x6c, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09,
+	0x52, 0x05, 0x6d, 0x6f, 0x64, 0x65, 0x6c, 0x22, 0x26, 0x0a, 0x0e, 0x52, 0x75, 0x6e, 0x4d, 0x6f,
 	0x64, 0x65, 0x6c, 0x52, 0x65, 0x73, 0x75, 0x6c, 0x74, 0x12, 0x14, 0x0a, 0x05, 0x6d, 0x6f, 0x64,
 	0x65, 0x6c, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x6d, 0x6f, 0x64, 0x65, 0x6c, 0x22,
 	0x2b, 0x0a, 0x0f, 0x49, 0x6e, 0x66, 0x65, 0x72, 0x65, 0x6e, 0x63, 0x65, 0x52, 0x65, 0x73, 0x75,
@@ -772,33 +615,30 @@ func file_services_synapse_stream_proto_rawDescGZIP() []byte {
 	return file_services_synapse_stream_proto_rawDescData
 }
 
-var file_services_synapse_stream_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
+var file_services_synapse_stream_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
 var file_services_synapse_stream_proto_goTypes = []interface{}{
-	(*StreamRequest)(nil),           // 0: yotta.services.synapse.StreamRequest
-	(*StreamResponse)(nil),          // 1: yotta.services.synapse.StreamResponse
-	(*InferenceMessage)(nil),        // 2: yotta.services.synapse.InferenceMessage
-	(*InferenceMessageContent)(nil), // 3: yotta.services.synapse.InferenceMessageContent
-	(*PingMessage)(nil),             // 4: yotta.services.synapse.PingMessage
-	(*RegisterMessage)(nil),         // 5: yotta.services.synapse.RegisterMessage
-	(*RunModelMessage)(nil),         // 6: yotta.services.synapse.RunModelMessage
-	(*RegisterResult)(nil),          // 7: yotta.services.synapse.RegisterResult
-	(*RunModelResult)(nil),          // 8: yotta.services.synapse.RunModelResult
-	(*InferenceResult)(nil),         // 9: yotta.services.synapse.InferenceResult
+	(*YottaLabsStream)(nil),         // 0: yotta.services.synapse.YottaLabsStream
+	(*InferenceMessage)(nil),        // 1: yotta.services.synapse.InferenceMessage
+	(*InferenceMessageContent)(nil), // 2: yotta.services.synapse.InferenceMessageContent
+	(*PingMessage)(nil),             // 3: yotta.services.synapse.PingMessage
+	(*PongResult)(nil),              // 4: yotta.services.synapse.PongResult
+	(*RunModelMessage)(nil),         // 5: yotta.services.synapse.RunModelMessage
+	(*RunModelResult)(nil),          // 6: yotta.services.synapse.RunModelResult
+	(*InferenceResult)(nil),         // 7: yotta.services.synapse.InferenceResult
 }
 var file_services_synapse_stream_proto_depIdxs = []int32{
-	4, // 0: yotta.services.synapse.StreamRequest.ping:type_name -> yotta.services.synapse.PingMessage
-	5, // 1: yotta.services.synapse.StreamRequest.register_message:type_name -> yotta.services.synapse.RegisterMessage
-	6, // 2: yotta.services.synapse.StreamRequest.run_model_message:type_name -> yotta.services.synapse.RunModelMessage
-	2, // 3: yotta.services.synapse.StreamRequest.inference_message:type_name -> yotta.services.synapse.InferenceMessage
-	7, // 4: yotta.services.synapse.StreamResponse.register_result:type_name -> yotta.services.synapse.RegisterResult
-	8, // 5: yotta.services.synapse.StreamResponse.run_model_result:type_name -> yotta.services.synapse.RunModelResult
-	9, // 6: yotta.services.synapse.StreamResponse.inference_result:type_name -> yotta.services.synapse.InferenceResult
-	3, // 7: yotta.services.synapse.InferenceMessage.messages:type_name -> yotta.services.synapse.InferenceMessageContent
-	8, // [8:8] is the sub-list for method output_type
-	8, // [8:8] is the sub-list for method input_type
-	8, // [8:8] is the sub-list for extension type_name
-	8, // [8:8] is the sub-list for extension extendee
-	0, // [0:8] is the sub-list for field type_name
+	3, // 0: yotta.services.synapse.YottaLabsStream.ping:type_name -> yotta.services.synapse.PingMessage
+	4, // 1: yotta.services.synapse.YottaLabsStream.pong:type_name -> yotta.services.synapse.PongResult
+	5, // 2: yotta.services.synapse.YottaLabsStream.run_model_message:type_name -> yotta.services.synapse.RunModelMessage
+	6, // 3: yotta.services.synapse.YottaLabsStream.run_model_result:type_name -> yotta.services.synapse.RunModelResult
+	1, // 4: yotta.services.synapse.YottaLabsStream.inference_message:type_name -> yotta.services.synapse.InferenceMessage
+	7, // 5: yotta.services.synapse.YottaLabsStream.inference_result:type_name -> yotta.services.synapse.InferenceResult
+	2, // 6: yotta.services.synapse.InferenceMessage.messages:type_name -> yotta.services.synapse.InferenceMessageContent
+	7, // [7:7] is the sub-list for method output_type
+	7, // [7:7] is the sub-list for method input_type
+	7, // [7:7] is the sub-list for extension type_name
+	7, // [7:7] is the sub-list for extension extendee
+	0, // [0:7] is the sub-list for field type_name
 }
 
 func init() { file_services_synapse_stream_proto_init() }
@@ -808,7 +648,7 @@ func file_services_synapse_stream_proto_init() {
 	}
 	if !protoimpl.UnsafeEnabled {
 		file_services_synapse_stream_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*StreamRequest); i {
+			switch v := v.(*YottaLabsStream); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -820,18 +660,6 @@ func file_services_synapse_stream_proto_init() {
 			}
 		}
 		file_services_synapse_stream_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*StreamResponse); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_services_synapse_stream_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*InferenceMessage); i {
 			case 0:
 				return &v.state
@@ -843,7 +671,7 @@ func file_services_synapse_stream_proto_init() {
 				return nil
 			}
 		}
-		file_services_synapse_stream_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
+		file_services_synapse_stream_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*InferenceMessageContent); i {
 			case 0:
 				return &v.state
@@ -855,7 +683,7 @@ func file_services_synapse_stream_proto_init() {
 				return nil
 			}
 		}
-		file_services_synapse_stream_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
+		file_services_synapse_stream_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*PingMessage); i {
 			case 0:
 				return &v.state
@@ -867,8 +695,8 @@ func file_services_synapse_stream_proto_init() {
 				return nil
 			}
 		}
-		file_services_synapse_stream_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*RegisterMessage); i {
+		file_services_synapse_stream_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*PongResult); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -879,7 +707,7 @@ func file_services_synapse_stream_proto_init() {
 				return nil
 			}
 		}
-		file_services_synapse_stream_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
+		file_services_synapse_stream_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*RunModelMessage); i {
 			case 0:
 				return &v.state
@@ -891,19 +719,7 @@ func file_services_synapse_stream_proto_init() {
 				return nil
 			}
 		}
-		file_services_synapse_stream_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*RegisterResult); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_services_synapse_stream_proto_msgTypes[8].Exporter = func(v interface{}, i int) interface{} {
+		file_services_synapse_stream_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*RunModelResult); i {
 			case 0:
 				return &v.state
@@ -915,7 +731,7 @@ func file_services_synapse_stream_proto_init() {
 				return nil
 			}
 		}
-		file_services_synapse_stream_proto_msgTypes[9].Exporter = func(v interface{}, i int) interface{} {
+		file_services_synapse_stream_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*InferenceResult); i {
 			case 0:
 				return &v.state
@@ -929,15 +745,12 @@ func file_services_synapse_stream_proto_init() {
 		}
 	}
 	file_services_synapse_stream_proto_msgTypes[0].OneofWrappers = []interface{}{
-		(*StreamRequest_Ping)(nil),
-		(*StreamRequest_RegisterMessage)(nil),
-		(*StreamRequest_RunModelMessage)(nil),
-		(*StreamRequest_InferenceMessage)(nil),
-	}
-	file_services_synapse_stream_proto_msgTypes[1].OneofWrappers = []interface{}{
-		(*StreamResponse_RegisterResult)(nil),
-		(*StreamResponse_RunModelResult)(nil),
-		(*StreamResponse_InferenceResult)(nil),
+		(*YottaLabsStream_Ping)(nil),
+		(*YottaLabsStream_Pong)(nil),
+		(*YottaLabsStream_RunModelMessage)(nil),
+		(*YottaLabsStream_RunModelResult)(nil),
+		(*YottaLabsStream_InferenceMessage)(nil),
+		(*YottaLabsStream_InferenceResult)(nil),
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -945,7 +758,7 @@ func file_services_synapse_stream_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_services_synapse_stream_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   10,
+			NumMessages:   8,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

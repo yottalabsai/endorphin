@@ -8,8 +8,6 @@ import "services/synapse/status.proto";
 import "services/synapse/stream.proto";
 
 service SynapseService {
-  rpc SayHello (HelloRequest) returns (HelloResponse){};
-  rpc ReportAgentStatus(AgentStatusRequest) returns (ReportAckResponse) {};
-  rpc Call(stream StreamRequest) returns (stream StreamResponse);
+  rpc Call(stream YottaLabsStream) returns (stream YottaLabsStream);
 }
 

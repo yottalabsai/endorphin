@@ -22,8 +22,6 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type SynapseServiceClient interface {
-	SayHello(ctx context.Context, in *HelloRequest, opts ...grpc.CallOption) (*HelloResponse, error)
-	ReportAgentStatus(ctx context.Context, in *AgentStatusRequest, opts ...grpc.CallOption) (*ReportAckResponse, error)
 	Call(ctx context.Context, opts ...grpc.CallOption) (SynapseService_CallClient, error)
 }
 
@@ -33,24 +31,6 @@ type synapseServiceClient struct {
 
 func NewSynapseServiceClient(cc grpc.ClientConnInterface) SynapseServiceClient {
 	return &synapseServiceClient{cc}
-}
-
-func (c *synapseServiceClient) SayHello(ctx context.Context, in *HelloRequest, opts ...grpc.CallOption) (*HelloResponse, error) {
-	out := new(HelloResponse)
-	err := c.cc.Invoke(ctx, "/yotta.services.synapse.SynapseService/SayHello", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *synapseServiceClient) ReportAgentStatus(ctx context.Context, in *AgentStatusRequest, opts ...grpc.CallOption) (*ReportAckResponse, error) {
-	out := new(ReportAckResponse)
-	err := c.cc.Invoke(ctx, "/yotta.services.synapse.SynapseService/ReportAgentStatus", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
 }
 
 func (c *synapseServiceClient) Call(ctx context.Context, opts ...grpc.CallOption) (SynapseService_CallClient, error) {
@@ -63,8 +43,8 @@ func (c *synapseServiceClient) Call(ctx context.Context, opts ...grpc.CallOption
 }
 
 type SynapseService_CallClient interface {
-	Send(*StreamRequest) error
-	Recv() (*StreamResponse, error)
+	Send(*YottaLabsStream) error
+	Recv() (*YottaLabsStream, error)
 	grpc.ClientStream
 }
 
@@ -72,12 +52,12 @@ type synapseServiceCallClient struct {
 	grpc.ClientStream
 }
 
-func (x *synapseServiceCallClient) Send(m *StreamRequest) error {
+func (x *synapseServiceCallClient) Send(m *YottaLabsStream) error {
 	return x.ClientStream.SendMsg(m)
 }
 
-func (x *synapseServiceCallClient) Recv() (*StreamResponse, error) {
-	m := new(StreamResponse)
+func (x *synapseServiceCallClient) Recv() (*YottaLabsStream, error) {
+	m := new(YottaLabsStream)
 	if err := x.ClientStream.RecvMsg(m); err != nil {
 		return nil, err
 	}
@@ -88,8 +68,6 @@ func (x *synapseServiceCallClient) Recv() (*StreamResponse, error) {
 // All implementations should embed UnimplementedSynapseServiceServer
 // for forward compatibility
 type SynapseServiceServer interface {
-	SayHello(context.Context, *HelloRequest) (*HelloResponse, error)
-	ReportAgentStatus(context.Context, *AgentStatusRequest) (*ReportAckResponse, error)
 	Call(SynapseService_CallServer) error
 }
 
@@ -97,12 +75,6 @@ type SynapseServiceServer interface {
 type UnimplementedSynapseServiceServer struct {
 }
 
-func (UnimplementedSynapseServiceServer) SayHello(context.Context, *HelloRequest) (*HelloResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method SayHello not implemented")
-}
-func (UnimplementedSynapseServiceServer) ReportAgentStatus(context.Context, *AgentStatusRequest) (*ReportAckResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ReportAgentStatus not implemented")
-}
 func (UnimplementedSynapseServiceServer) Call(SynapseService_CallServer) error {
 	return status.Errorf(codes.Unimplemented, "method Call not implemented")
 }
@@ -118,49 +90,13 @@ func RegisterSynapseServiceServer(s grpc.ServiceRegistrar, srv SynapseServiceSer
 	s.RegisterService(&SynapseService_ServiceDesc, srv)
 }
 
-func _SynapseService_SayHello_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(HelloRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(SynapseServiceServer).SayHello(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/yotta.services.synapse.SynapseService/SayHello",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SynapseServiceServer).SayHello(ctx, req.(*HelloRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _SynapseService_ReportAgentStatus_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(AgentStatusRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(SynapseServiceServer).ReportAgentStatus(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/yotta.services.synapse.SynapseService/ReportAgentStatus",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SynapseServiceServer).ReportAgentStatus(ctx, req.(*AgentStatusRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 func _SynapseService_Call_Handler(srv interface{}, stream grpc.ServerStream) error {
 	return srv.(SynapseServiceServer).Call(&synapseServiceCallServer{stream})
 }
 
 type SynapseService_CallServer interface {
-	Send(*StreamResponse) error
-	Recv() (*StreamRequest, error)
+	Send(*YottaLabsStream) error
+	Recv() (*YottaLabsStream, error)
 	grpc.ServerStream
 }
 
@@ -168,12 +104,12 @@ type synapseServiceCallServer struct {
 	grpc.ServerStream
 }
 
-func (x *synapseServiceCallServer) Send(m *StreamResponse) error {
+func (x *synapseServiceCallServer) Send(m *YottaLabsStream) error {
 	return x.ServerStream.SendMsg(m)
 }
 
-func (x *synapseServiceCallServer) Recv() (*StreamRequest, error) {
-	m := new(StreamRequest)
+func (x *synapseServiceCallServer) Recv() (*YottaLabsStream, error) {
+	m := new(YottaLabsStream)
 	if err := x.ServerStream.RecvMsg(m); err != nil {
 		return nil, err
 	}
@@ -186,16 +122,7 @@ func (x *synapseServiceCallServer) Recv() (*StreamRequest, error) {
 var SynapseService_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "yotta.services.synapse.SynapseService",
 	HandlerType: (*SynapseServiceServer)(nil),
-	Methods: []grpc.MethodDesc{
-		{
-			MethodName: "SayHello",
-			Handler:    _SynapseService_SayHello_Handler,
-		},
-		{
-			MethodName: "ReportAgentStatus",
-			Handler:    _SynapseService_ReportAgentStatus_Handler,
-		},
-	},
+	Methods:     []grpc.MethodDesc{},
 	Streams: []grpc.StreamDesc{
 		{
 			StreamName:    "Call",

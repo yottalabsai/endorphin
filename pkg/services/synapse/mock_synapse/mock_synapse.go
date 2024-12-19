@@ -57,46 +57,6 @@ func (mr *MockSynapseServiceClientMockRecorder) Call(ctx interface{}, opts ...in
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Call", reflect.TypeOf((*MockSynapseServiceClient)(nil).Call), varargs...)
 }
 
-// ReportAgentStatus mocks base method.
-func (m *MockSynapseServiceClient) ReportAgentStatus(ctx context.Context, in *synapse.AgentStatusRequest, opts ...grpc.CallOption) (*synapse.ReportAckResponse, error) {
-	m.ctrl.T.Helper()
-	varargs := []interface{}{ctx, in}
-	for _, a := range opts {
-		varargs = append(varargs, a)
-	}
-	ret := m.ctrl.Call(m, "ReportAgentStatus", varargs...)
-	ret0, _ := ret[0].(*synapse.ReportAckResponse)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// ReportAgentStatus indicates an expected call of ReportAgentStatus.
-func (mr *MockSynapseServiceClientMockRecorder) ReportAgentStatus(ctx, in interface{}, opts ...interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	varargs := append([]interface{}{ctx, in}, opts...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReportAgentStatus", reflect.TypeOf((*MockSynapseServiceClient)(nil).ReportAgentStatus), varargs...)
-}
-
-// SayHello mocks base method.
-func (m *MockSynapseServiceClient) SayHello(ctx context.Context, in *synapse.HelloRequest, opts ...grpc.CallOption) (*synapse.HelloResponse, error) {
-	m.ctrl.T.Helper()
-	varargs := []interface{}{ctx, in}
-	for _, a := range opts {
-		varargs = append(varargs, a)
-	}
-	ret := m.ctrl.Call(m, "SayHello", varargs...)
-	ret0, _ := ret[0].(*synapse.HelloResponse)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// SayHello indicates an expected call of SayHello.
-func (mr *MockSynapseServiceClientMockRecorder) SayHello(ctx, in interface{}, opts ...interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	varargs := append([]interface{}{ctx, in}, opts...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SayHello", reflect.TypeOf((*MockSynapseServiceClient)(nil).SayHello), varargs...)
-}
-
 // MockSynapseService_CallClient is a mock of SynapseService_CallClient interface.
 type MockSynapseService_CallClient struct {
 	ctrl     *gomock.Controller
@@ -164,10 +124,10 @@ func (mr *MockSynapseService_CallClientMockRecorder) Header() *gomock.Call {
 }
 
 // Recv mocks base method.
-func (m *MockSynapseService_CallClient) Recv() (*synapse.StreamResponse, error) {
+func (m *MockSynapseService_CallClient) Recv() (*synapse.YottaLabsStream, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Recv")
-	ret0, _ := ret[0].(*synapse.StreamResponse)
+	ret0, _ := ret[0].(*synapse.YottaLabsStream)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -193,7 +153,7 @@ func (mr *MockSynapseService_CallClientMockRecorder) RecvMsg(m interface{}) *gom
 }
 
 // Send mocks base method.
-func (m *MockSynapseService_CallClient) Send(arg0 *synapse.StreamRequest) error {
+func (m *MockSynapseService_CallClient) Send(arg0 *synapse.YottaLabsStream) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Send", arg0)
 	ret0, _ := ret[0].(error)
@@ -271,36 +231,6 @@ func (mr *MockSynapseServiceServerMockRecorder) Call(arg0 interface{}) *gomock.C
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Call", reflect.TypeOf((*MockSynapseServiceServer)(nil).Call), arg0)
 }
 
-// ReportAgentStatus mocks base method.
-func (m *MockSynapseServiceServer) ReportAgentStatus(arg0 context.Context, arg1 *synapse.AgentStatusRequest) (*synapse.ReportAckResponse, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ReportAgentStatus", arg0, arg1)
-	ret0, _ := ret[0].(*synapse.ReportAckResponse)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// ReportAgentStatus indicates an expected call of ReportAgentStatus.
-func (mr *MockSynapseServiceServerMockRecorder) ReportAgentStatus(arg0, arg1 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReportAgentStatus", reflect.TypeOf((*MockSynapseServiceServer)(nil).ReportAgentStatus), arg0, arg1)
-}
-
-// SayHello mocks base method.
-func (m *MockSynapseServiceServer) SayHello(arg0 context.Context, arg1 *synapse.HelloRequest) (*synapse.HelloResponse, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "SayHello", arg0, arg1)
-	ret0, _ := ret[0].(*synapse.HelloResponse)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// SayHello indicates an expected call of SayHello.
-func (mr *MockSynapseServiceServerMockRecorder) SayHello(arg0, arg1 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SayHello", reflect.TypeOf((*MockSynapseServiceServer)(nil).SayHello), arg0, arg1)
-}
-
 // MockUnsafeSynapseServiceServer is a mock of UnsafeSynapseServiceServer interface.
 type MockUnsafeSynapseServiceServer struct {
 	ctrl     *gomock.Controller
@@ -374,10 +304,10 @@ func (mr *MockSynapseService_CallServerMockRecorder) Context() *gomock.Call {
 }
 
 // Recv mocks base method.
-func (m *MockSynapseService_CallServer) Recv() (*synapse.StreamRequest, error) {
+func (m *MockSynapseService_CallServer) Recv() (*synapse.YottaLabsStream, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Recv")
-	ret0, _ := ret[0].(*synapse.StreamRequest)
+	ret0, _ := ret[0].(*synapse.YottaLabsStream)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -403,7 +333,7 @@ func (mr *MockSynapseService_CallServerMockRecorder) RecvMsg(m interface{}) *gom
 }
 
 // Send mocks base method.
-func (m *MockSynapseService_CallServer) Send(arg0 *synapse.StreamResponse) error {
+func (m *MockSynapseService_CallServer) Send(arg0 *synapse.YottaLabsStream) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Send", arg0)
 	ret0, _ := ret[0].(error)
