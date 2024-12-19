@@ -24,6 +24,7 @@ const _ = grpc.SupportPackageIsVersion7
 type SynapseServiceClient interface {
 	SayHello(ctx context.Context, in *HelloRequest, opts ...grpc.CallOption) (*HelloResponse, error)
 	ReportAgentStatus(ctx context.Context, in *AgentStatusRequest, opts ...grpc.CallOption) (*ReportAckResponse, error)
+	Call(ctx context.Context, opts ...grpc.CallOption) (SynapseService_CallClient, error)
 }
 
 type synapseServiceClient struct {
@@ -52,12 +53,44 @@ func (c *synapseServiceClient) ReportAgentStatus(ctx context.Context, in *AgentS
 	return out, nil
 }
 
+func (c *synapseServiceClient) Call(ctx context.Context, opts ...grpc.CallOption) (SynapseService_CallClient, error) {
+	stream, err := c.cc.NewStream(ctx, &SynapseService_ServiceDesc.Streams[0], "/yotta.services.synapse.SynapseService/Call", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &synapseServiceCallClient{stream}
+	return x, nil
+}
+
+type SynapseService_CallClient interface {
+	Send(*StreamMessage) error
+	Recv() (*StreamMessage, error)
+	grpc.ClientStream
+}
+
+type synapseServiceCallClient struct {
+	grpc.ClientStream
+}
+
+func (x *synapseServiceCallClient) Send(m *StreamMessage) error {
+	return x.ClientStream.SendMsg(m)
+}
+
+func (x *synapseServiceCallClient) Recv() (*StreamMessage, error) {
+	m := new(StreamMessage)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
 // SynapseServiceServer is the server API for SynapseService service.
 // All implementations should embed UnimplementedSynapseServiceServer
 // for forward compatibility
 type SynapseServiceServer interface {
 	SayHello(context.Context, *HelloRequest) (*HelloResponse, error)
 	ReportAgentStatus(context.Context, *AgentStatusRequest) (*ReportAckResponse, error)
+	Call(SynapseService_CallServer) error
 }
 
 // UnimplementedSynapseServiceServer should be embedded to have forward compatible implementations.
@@ -69,6 +102,9 @@ func (UnimplementedSynapseServiceServer) SayHello(context.Context, *HelloRequest
 }
 func (UnimplementedSynapseServiceServer) ReportAgentStatus(context.Context, *AgentStatusRequest) (*ReportAckResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ReportAgentStatus not implemented")
+}
+func (UnimplementedSynapseServiceServer) Call(SynapseService_CallServer) error {
+	return status.Errorf(codes.Unimplemented, "method Call not implemented")
 }
 
 // UnsafeSynapseServiceServer may be embedded to opt out of forward compatibility for this service.
@@ -118,6 +154,32 @@ func _SynapseService_ReportAgentStatus_Handler(srv interface{}, ctx context.Cont
 	return interceptor(ctx, in, info, handler)
 }
 
+func _SynapseService_Call_Handler(srv interface{}, stream grpc.ServerStream) error {
+	return srv.(SynapseServiceServer).Call(&synapseServiceCallServer{stream})
+}
+
+type SynapseService_CallServer interface {
+	Send(*StreamMessage) error
+	Recv() (*StreamMessage, error)
+	grpc.ServerStream
+}
+
+type synapseServiceCallServer struct {
+	grpc.ServerStream
+}
+
+func (x *synapseServiceCallServer) Send(m *StreamMessage) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func (x *synapseServiceCallServer) Recv() (*StreamMessage, error) {
+	m := new(StreamMessage)
+	if err := x.ServerStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
 // SynapseService_ServiceDesc is the grpc.ServiceDesc for SynapseService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -134,6 +196,13 @@ var SynapseService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _SynapseService_ReportAgentStatus_Handler,
 		},
 	},
-	Streams:  []grpc.StreamDesc{},
+	Streams: []grpc.StreamDesc{
+		{
+			StreamName:    "Call",
+			Handler:       _SynapseService_Call_Handler,
+			ServerStreams: true,
+			ClientStreams: true,
+		},
+	},
 	Metadata: "services/synapse/synapse.proto",
 }

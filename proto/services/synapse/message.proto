@@ -1,0 +1,54 @@
+syntax = "proto3";
+
+package yotta.services.synapse;
+
+option go_package = "github.com/yottalabsai/endorphin/pkg/services/synapse";
+
+message BaseMessage {
+  string message_id = 1;     
+  int64 timestamp = 2; 
+  string sender_id = 3;
+}
+
+message StreamMessage {
+  BaseMessage base = 1;
+  map<string, string> metadata = 2;
+  oneof payload {
+    HeartbeatRequest heartbeat = 3;
+    RunModelRequest run_model = 4;
+    RunModelResponse run_model_response = 5;
+    InferenceRequest inference = 6;
+    InferenceResponse inference_response = 7;
+  }
+}
+
+message HeartbeatRequest {
+  string client_id = 1;
+}
+
+message RunModelRequest {
+  string model_id = 1;
+  string prompt = 2;
+}
+
+message RunModelResponse {
+  string run_model_message_id = 1;
+  int64 code = 2;
+  string message = 3;
+}
+
+message InferenceRequest {
+    string model_id = 1;
+    repeated InferenceContent contents = 2;
+}
+
+message InferenceContent {
+  string role = 1;
+  string content = 2;
+}
+
+message InferenceResponse {
+    string inference_message_id = 1;
+    bool is_stream = 2;
+    string result = 3; // stringify json result
+}

@@ -5,9 +5,11 @@ option go_package = "github.com/yottalabsai/endorphin/pkg/services/synapse";
 
 import "services/synapse/hello.proto";
 import "services/synapse/status.proto";
+import "services/synapse/message.proto";
 
 service SynapseService {
   rpc SayHello (HelloRequest) returns (HelloResponse){};
   rpc ReportAgentStatus(AgentStatusRequest) returns (ReportAckResponse) {};
+  rpc Call(stream StreamMessage) returns (stream StreamMessage);
 }
 
