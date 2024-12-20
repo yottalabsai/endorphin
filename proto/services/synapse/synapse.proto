@@ -3,8 +3,6 @@ package yotta.services.synapse;
 
 option go_package = "github.com/yottalabsai/endorphin/pkg/services/synapse";
 
-import "services/synapse/hello.proto";
-import "services/synapse/status.proto";
 import "services/synapse/stream.proto";
 
 service SynapseService {
