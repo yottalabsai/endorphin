@@ -8,7 +8,7 @@ message YottaLabsStream {
   string client_id = 1;         // 客户端标识，当Register成功后，server返回给client
   int64 timestamp = 2;          // 时间戳
   string message_id = 3;        // 请求ID， 用于幂等，谁发起消息，谁负责生成 message_id；
-  oneof payload {               // 不同类型payload，可以扩展各种不同消息类型， 本身就是可选，可能是nil
+  oneof payload {// 不同类型payload，可以扩展各种不同消息类型， 本身就是可选，可能是nil
     PingMessage ping = 4;
     PongResult  pong = 5;
     RunModelMessage run_model_message = 6;
@@ -19,21 +19,21 @@ message YottaLabsStream {
 }
 
 message InferenceMessage {
-  // 下面的先不用
-  // double temperature = 1;
-  // double top_p = 2;
-  // int32 max_tokens = 3;
-  // double frequency_penalty = 4;
-  // double presence_penalty = 5;
-  // double repetition_penalty = 6;
-  // string model = 7;
-  repeated InferenceMessageContent messages = 1;
+  uint32 frequency_penalty = 1;
+  uint32 max_tokens = 2;
+  string model = 3;
+  repeated Messages messages = 4;
+  bool stream = 5;
+  Stream_options stream_options = 6;
 }
-
-message InferenceMessageContent {
+message Messages {
   string role = 1;
   string content = 2;
 }
+message Stream_options {
+  bool include_usage = 1;
+}
+
 
 // 心跳消息
 message PingMessage {
@@ -46,7 +46,7 @@ message PongResult {
 
 // 启动模型
 message RunModelMessage {
-  string model = 1; 
+  string model = 1;
 }
 
 // 加载模型成功消息（没啥意义，可以不用做这个消息）
