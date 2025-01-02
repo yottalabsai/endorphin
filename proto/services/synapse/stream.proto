@@ -19,18 +19,22 @@ message YottaLabsStream {
 }
 
 message InferenceMessage {
-  uint32 frequency_penalty = 1;
-  uint32 max_tokens = 2;
-  string model = 3;
-  repeated Messages messages = 4;
-  bool stream = 5;
-  Stream_options stream_options = 6;
+  double temperature = 1;
+  double top_p = 2;
+  int32 max_tokens = 3;
+  double frequency_penalty = 4;
+  double presence_penalty = 5;
+  double repetition_penalty = 6;
+  string model = 7;
+  repeated Message messages = 8;
+  bool stream = 9;
+  StreamOptions stream_options = 10;
 }
-message Messages {
+message Message {
   string role = 1;
   string content = 2;
 }
-message Stream_options {
+message StreamOptions {
   bool include_usage = 1;
 }
 
