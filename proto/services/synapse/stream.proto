@@ -67,8 +67,8 @@ message InferenceResult {
 
 // text-to-image Request
 message TextToImageMessage {
-  double prompt = 1;
-  double numInferenceSteps = 2;
+  string prompt = 1;
+  int32 numInferenceSteps = 2;
   double guidanceScale = 3;
   double loraWeight = 4;
   int32 seed = 5;
