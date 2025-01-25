@@ -15,6 +15,8 @@ message YottaLabsStream {
     RunModelResult run_model_result = 7;
     InferenceMessage inference_message = 8;
     InferenceResult inference_result = 9;
+    TextToImageMessage text_to_image_message = 10;
+    TextToImageResult text_to_image_result = 11;
   }
 }
 
@@ -60,5 +62,19 @@ message RunModelResult {
 
 // Inference成功消息
 message InferenceResult {
+  string content = 1;
+}
+
+// text-to-image Request
+message TextToImageMessage {
+  double prompt = 1;
+  double numInferenceSteps = 2;
+  double guidanceScale = 3;
+  double loraWeight = 4;
+  int32 seed = 5;
+}
+
+// text-to-image Result
+message TextToImageResult {
   string content = 1;
 }
