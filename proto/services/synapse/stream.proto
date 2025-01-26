@@ -11,13 +11,39 @@ message YottaLabsStream {
   oneof payload {// 不同类型payload，可以扩展各种不同消息类型， 本身就是可选，可能是nil
     PingMessage ping = 4;
     PongResult  pong = 5;
-    RunModelMessage run_model_message = 6;
-    RunModelResult run_model_result = 7;
-    InferenceMessage inference_message = 8;
-    InferenceResult inference_result = 9;
-    TextToImageMessage text_to_image_message = 10;
-    TextToImageResult text_to_image_result = 11;
+    ErrorResult error_result = 6;
+    RunModelMessage run_model_message = 7;
+    RunModelResult run_model_result = 8;
+    InferenceMessage inference_message = 9;
+    InferenceResult inference_result = 10;
+    TextToImageMessage text_to_image_message = 11;
+    TextToImageResult text_to_image_result = 12;
   }
+}
+
+// 心跳消息
+message PingMessage {
+  int64 sequence = 1;
+}
+
+message PongResult {
+  int64 sequence = 1;
+}
+
+// 错误信息
+message ErrorResult {
+  string code = 1;
+  string message = 2;
+}
+
+// 启动模型
+message RunModelMessage {
+  string model = 1;
+}
+
+// 加载模型成功消息（没啥意义，可以不用做这个消息）
+message RunModelResult {
+  string model = 1;
 }
 
 message InferenceMessage {
@@ -38,26 +64,6 @@ message Message {
 }
 message StreamOptions {
   bool include_usage = 1;
-}
-
-
-// 心跳消息
-message PingMessage {
-  int64 sequence = 1;
-}
-
-message PongResult {
-  int64 sequence = 1;
-}
-
-// 启动模型
-message RunModelMessage {
-  string model = 1;
-}
-
-// 加载模型成功消息（没啥意义，可以不用做这个消息）
-message RunModelResult {
-  string model = 1;
 }
 
 // Inference成功消息
