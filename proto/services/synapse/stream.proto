@@ -24,10 +24,12 @@ message YottaLabsStream {
 // 心跳消息
 message PingMessage {
   int64 sequence = 1;
+  string modelType = 2;
 }
 
 message PongResult {
   int64 sequence = 1;
+  string modelType = 2;
 }
 
 // 错误信息
@@ -82,5 +84,12 @@ message TextToImageMessage {
 
 // text-to-image Result
 message TextToImageResult {
-  string content = 1;
+  int32 code = 1;
+  string message = 2;
+  repeated ImageResult images = 3;
+}
+
+message ImageResult {
+  string url = 1;
+  double latency = 2;
 }
