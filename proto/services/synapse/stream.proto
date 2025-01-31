@@ -6,30 +6,29 @@ option go_package = "github.com/yottalabsai/endorphin/pkg/services/synapse";
 
 message YottaLabsStream {
   string client_id = 1;         // 客户端标识，当Register成功后，server返回给client
-  int64 timestamp = 2;          // 时间戳
-  string message_id = 3;        // 请求ID， 用于幂等，谁发起消息，谁负责生成 message_id；
+  string model_type = 2;         // 模型类型
+  int64 timestamp = 3;          // 时间戳
+  string message_id = 4;        // 请求ID， 用于幂等，谁发起消息，谁负责生成 message_id；
   oneof payload {// 不同类型payload，可以扩展各种不同消息类型， 本身就是可选，可能是nil
-    PingMessage ping = 4;
-    PongResult  pong = 5;
-    ErrorResult error_result = 6;
-    RunModelMessage run_model_message = 7;
-    RunModelResult run_model_result = 8;
-    InferenceMessage inference_message = 9;
-    InferenceResult inference_result = 10;
-    TextToImageMessage text_to_image_message = 11;
-    TextToImageResult text_to_image_result = 12;
+    PingMessage ping = 5;
+    PongResult  pong = 6;
+    ErrorResult error_result = 7;
+    RunModelMessage run_model_message = 8;
+    RunModelResult run_model_result = 9;
+    InferenceMessage inference_message = 10;
+    InferenceResult inference_result = 11;
+    TextToImageMessage text_to_image_message = 12;
+    TextToImageResult text_to_image_result = 13;
   }
 }
 
 // 心跳消息
 message PingMessage {
   int64 sequence = 1;
-  string modelType = 2;
 }
 
 message PongResult {
   int64 sequence = 1;
-  string modelType = 2;
 }
 
 // 错误信息
