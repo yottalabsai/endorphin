@@ -91,4 +91,5 @@ message TextToImageResult {
 message ImageResult {
   string url = 1;
   double latency = 2;
+  bool is_safe_prompt = 3;
 }
