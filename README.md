@@ -4,7 +4,7 @@
 git tag -a v0.1.0 -m "first release"
 git push origin v0.1.0
 
-git tag -a v0.0.11 -m "first release" && git push origin v0.0.11
+git tag -a v0.0.14 -m "first release" && git push origin v0.0.14
 
 ```
 
