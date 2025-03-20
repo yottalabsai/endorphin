@@ -124,10 +124,10 @@ func (mr *MockSynapseService_CallClientMockRecorder) Header() *gomock.Call {
 }
 
 // Recv mocks base method.
-func (m *MockSynapseService_CallClient) Recv() (*synapse.YottaLabsStream, error) {
+func (m *MockSynapseService_CallClient) Recv() (*synapse.Message, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Recv")
-	ret0, _ := ret[0].(*synapse.YottaLabsStream)
+	ret0, _ := ret[0].(*synapse.Message)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -153,7 +153,7 @@ func (mr *MockSynapseService_CallClientMockRecorder) RecvMsg(m interface{}) *gom
 }
 
 // Send mocks base method.
-func (m *MockSynapseService_CallClient) Send(arg0 *synapse.YottaLabsStream) error {
+func (m *MockSynapseService_CallClient) Send(arg0 *synapse.Message) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Send", arg0)
 	ret0, _ := ret[0].(error)
@@ -304,10 +304,10 @@ func (mr *MockSynapseService_CallServerMockRecorder) Context() *gomock.Call {
 }
 
 // Recv mocks base method.
-func (m *MockSynapseService_CallServer) Recv() (*synapse.YottaLabsStream, error) {
+func (m *MockSynapseService_CallServer) Recv() (*synapse.Message, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Recv")
-	ret0, _ := ret[0].(*synapse.YottaLabsStream)
+	ret0, _ := ret[0].(*synapse.Message)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -333,7 +333,7 @@ func (mr *MockSynapseService_CallServerMockRecorder) RecvMsg(m interface{}) *gom
 }
 
 // Send mocks base method.
-func (m *MockSynapseService_CallServer) Send(arg0 *synapse.YottaLabsStream) error {
+func (m *MockSynapseService_CallServer) Send(arg0 *synapse.Message) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Send", arg0)
 	ret0, _ := ret[0].(error)

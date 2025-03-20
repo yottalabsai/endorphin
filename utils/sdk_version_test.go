@@ -9,7 +9,7 @@ func TestGetSDKVersion(t *testing.T) {
 	}{
 		{
 			name: "Test GetSDKVersion",
-			want: "1.0.0",
+			want: "2.0.0",
 		},
 	}
 	for _, tt := range tests {

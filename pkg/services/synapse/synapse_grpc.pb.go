@@ -43,8 +43,8 @@ func (c *synapseServiceClient) Call(ctx context.Context, opts ...grpc.CallOption
 }
 
 type SynapseService_CallClient interface {
-	Send(*YottaLabsStream) error
-	Recv() (*YottaLabsStream, error)
+	Send(*Message) error
+	Recv() (*Message, error)
 	grpc.ClientStream
 }
 
@@ -52,12 +52,12 @@ type synapseServiceCallClient struct {
 	grpc.ClientStream
 }
 
-func (x *synapseServiceCallClient) Send(m *YottaLabsStream) error {
+func (x *synapseServiceCallClient) Send(m *Message) error {
 	return x.ClientStream.SendMsg(m)
 }
 
-func (x *synapseServiceCallClient) Recv() (*YottaLabsStream, error) {
-	m := new(YottaLabsStream)
+func (x *synapseServiceCallClient) Recv() (*Message, error) {
+	m := new(Message)
 	if err := x.ClientStream.RecvMsg(m); err != nil {
 		return nil, err
 	}
@@ -95,8 +95,8 @@ func _SynapseService_Call_Handler(srv interface{}, stream grpc.ServerStream) err
 }
 
 type SynapseService_CallServer interface {
-	Send(*YottaLabsStream) error
-	Recv() (*YottaLabsStream, error)
+	Send(*Message) error
+	Recv() (*Message, error)
 	grpc.ServerStream
 }
 
@@ -104,12 +104,12 @@ type synapseServiceCallServer struct {
 	grpc.ServerStream
 }
 
-func (x *synapseServiceCallServer) Send(m *YottaLabsStream) error {
+func (x *synapseServiceCallServer) Send(m *Message) error {
 	return x.ServerStream.SendMsg(m)
 }
 
-func (x *synapseServiceCallServer) Recv() (*YottaLabsStream, error) {
-	m := new(YottaLabsStream)
+func (x *synapseServiceCallServer) Recv() (*Message, error) {
+	m := new(Message)
 	if err := x.ServerStream.RecvMsg(m); err != nil {
 		return nil, err
 	}

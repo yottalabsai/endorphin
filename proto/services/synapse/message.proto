@@ -1,11 +1,9 @@
 syntax = "proto3";
+
 package yotta.services.synapse;
 
 option go_package = "github.com/yottalabsai/endorphin/pkg/services/synapse";
 
-import "services/synapse/message.proto";
-
-service SynapseService {
-  rpc Call(stream Message) returns (stream Message);
+message Message {
+  string text = 1;
 }
-
