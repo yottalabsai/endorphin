@@ -43,8 +43,8 @@ func (c *synapseServiceClient) Call(ctx context.Context, opts ...grpc.CallOption
 }
 
 type SynapseService_CallClient interface {
-	Send(*Message) error
-	Recv() (*Message, error)
+	Send(*JsonRpcRequest) error
+	Recv() (*JsonRpcRequest, error)
 	grpc.ClientStream
 }
 
@@ -52,12 +52,12 @@ type synapseServiceCallClient struct {
 	grpc.ClientStream
 }
 
-func (x *synapseServiceCallClient) Send(m *Message) error {
+func (x *synapseServiceCallClient) Send(m *JsonRpcRequest) error {
 	return x.ClientStream.SendMsg(m)
 }
 
-func (x *synapseServiceCallClient) Recv() (*Message, error) {
-	m := new(Message)
+func (x *synapseServiceCallClient) Recv() (*JsonRpcRequest, error) {
+	m := new(JsonRpcRequest)
 	if err := x.ClientStream.RecvMsg(m); err != nil {
 		return nil, err
 	}
@@ -95,8 +95,8 @@ func _SynapseService_Call_Handler(srv interface{}, stream grpc.ServerStream) err
 }
 
 type SynapseService_CallServer interface {
-	Send(*Message) error
-	Recv() (*Message, error)
+	Send(*JsonRpcRequest) error
+	Recv() (*JsonRpcRequest, error)
 	grpc.ServerStream
 }
 
@@ -104,12 +104,12 @@ type synapseServiceCallServer struct {
 	grpc.ServerStream
 }
 
-func (x *synapseServiceCallServer) Send(m *Message) error {
+func (x *synapseServiceCallServer) Send(m *JsonRpcRequest) error {
 	return x.ServerStream.SendMsg(m)
 }
 
-func (x *synapseServiceCallServer) Recv() (*Message, error) {
-	m := new(Message)
+func (x *synapseServiceCallServer) Recv() (*JsonRpcRequest, error) {
+	m := new(JsonRpcRequest)
 	if err := x.ServerStream.RecvMsg(m); err != nil {
 		return nil, err
 	}

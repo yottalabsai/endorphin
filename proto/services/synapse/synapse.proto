@@ -6,6 +6,6 @@ option go_package = "github.com/yottalabsai/endorphin/pkg/services/synapse";
 import "services/synapse/message.proto";
 
 service SynapseService {
-  rpc Call(stream Message) returns (stream Message);
+  rpc Call(stream JsonRpcRequest) returns (stream JsonRpcRequest);
 }
 

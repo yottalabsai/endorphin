@@ -1,9 +1,32 @@
 syntax = "proto3";
 
 package yotta.services.synapse;
+import "google/protobuf/struct.proto";
 
 option go_package = "github.com/yottalabsai/endorphin/pkg/services/synapse";
 
-message Message {
-  string text = 1;
+message JsonRpcRequest {
+  string jsonrpc = 1;
+  string method = 2;
+  google.protobuf.Value params = 3;
+  oneof id {
+    string string_id = 4;
+    int64 number_id = 5;
+  }
+}
+
+message JsonRpcResponse {
+  string jsonrpc = 1;
+  google.protobuf.Value result = 2;
+  JsonRpcError error = 3;
+  oneof id {
+    string string_id = 4;
+    int64 number_id = 5;
+  }
+}
+
+message JsonRpcError {
+  int32 code = 1;
+  string message = 2;
+  google.protobuf.Value data = 3;
 }
